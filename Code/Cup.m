@@ -9,9 +9,9 @@ classdef Cup
     end
 
     methods
-        function obj = PlaceCup(initialTransform)
+        function obj = Cup(initialTransform)
             obj.currentTransform = initialTransform; 
-            obj.cupModel = PlaceObject('cup.ply',obj.initialTransform); %places the cup %check if place object can take in tranform
+            obj.cupModel = PlaceObject('cup.ply',initialTransform); %places the cup %check if place object can take in tranform
             obj.vertices = [get(obj.cupModel,'Vertices'), ones(size(get(obj.cupModel,'Vertices'),1),1)];
 
         end
