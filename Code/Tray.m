@@ -12,8 +12,13 @@ classdef Tray
     methods
         function obj = Tray(initialTransform)
             obj.currentTransform = initialTransform; 
-            obj.trayModel = PlaceObject('tray.ply',initialTransform); %places the tray
+            obj.trayModel = PlaceObject('tray.ply'); %places the tray
+            %PlaceObject() can only take in a position not a transform.
+            %Therefore place the tray at origin and transform vertices to
+            %the initial transform
             obj.vertices = [get(obj.trayModel,'Vertices'), ones(size(get(obj.trayModel,'Vertices'),1),1)];
+            transformedVertices = obj.vertices * initialTransform';
+            set(obj.trayModel,'Vertices',transformedVertices(:,1:3));
 
             cupLocation = [-0.02 , 0, -0.02;
                 -0.02, 0, 0;
