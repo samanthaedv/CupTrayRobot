@@ -11,7 +11,7 @@ classdef Tray
 
     methods
         function obj = Tray(initialTransform)
-            obj.currentTransform = initialTransform; 
+            obj.currentTransform = initialTransform; %To get the tray rotated correctly trotx(pi/2)
             obj.trayModel = PlaceObject('tray.ply'); %places the tray
             %PlaceObject() can only take in a position not a transform.
             %Therefore place the tray at origin and transform vertices to
