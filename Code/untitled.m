@@ -1,2 +1,6 @@
+clc;
+clear all;
 hold on;
-Tray(trotx(pi/2));
+
+
+URTray;
