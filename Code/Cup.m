@@ -11,7 +11,7 @@ classdef Cup
     methods
         function obj = Cup(initialTransform)
             obj.currentTransform = initialTransform; 
-            obj.cupModel = PlaceObject('cup.ply'); %places the cup
+            obj.cupModel = PlaceObject('Cup.ply'); %places the cup
             %PlaceObject() can only take in a position not a transform.
             %Therefore place the cup at origin and transform vertices to
             %the initial transform

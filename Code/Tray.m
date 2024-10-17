@@ -18,14 +18,15 @@ classdef Tray
             %the initial transform
             obj.vertices = [get(obj.trayModel,'Vertices'), ones(size(get(obj.trayModel,'Vertices'),1),1)];
             transformedVertices = obj.vertices * initialTransform';
+            transformedVertices = transformedVertices*0.01;
             set(obj.trayModel,'Vertices',transformedVertices(:,1:3));
 
-            cupLocation = [-0.02 , 0, -0.02;
+            cupLocation = [-0.02 , -0.02, 0;
                 -0.02, 0, 0;
-                -0.02, 0, 0.02;
-                0.02, 0, -0.02;
+                -0.02, 0.02, 0;
+                0.02, -0.02, 0;
                 0.02, 0, 0;
-                0.02, 0, 0.02;
+                0.02, 0.02, 0;
                 ];
 
             for i = 1:6
