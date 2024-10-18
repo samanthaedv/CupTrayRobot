@@ -22,6 +22,7 @@ function self = URTray(baseTr)
             % Create the UR5 model mounted on a linear rail
             link(1) = Link([pi     1       0       -pi/2    1]); % PRISMATIC Link
             link(2) = Link([pi/2     0       0       pi/2    1]); % PRISMATIC Link
+     
            
             link(3) = Link('d',0.15185,'a',0,'alpha',pi/2,'qlim',deg2rad([-360, 360]), 'offset',0);
             link(4) = Link('d',0,'a',-0.24355,'alpha',0,'qlim', deg2rad([-360, 360]), 'offset',0);
@@ -40,6 +41,7 @@ function self = URTray(baseTr)
             link(7).qlim = [-360 360]*pi/180;
             link(8).qlim = [-360 360]*pi/180;
         
+            
             link(4).offset = -pi/2;
             link(6).offset = -pi/2;
             
