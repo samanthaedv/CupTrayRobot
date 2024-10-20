@@ -18,7 +18,7 @@ classdef Tray
             %the initial transform
             obj.vertices = [get(obj.trayModel,'Vertices'), ones(size(get(obj.trayModel,'Vertices'),1),1)];
             transformedVertices = obj.vertices * initialTransform';
-            transformedVertices = transformedVertices;
+            
             set(obj.trayModel,'Vertices',transformedVertices(:,1:3));
 
             cupLocation = [-0.1 , -0.06, 0;

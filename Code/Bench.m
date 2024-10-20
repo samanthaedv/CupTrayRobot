@@ -17,7 +17,7 @@ classdef Bench
             %the initial transform
             obj.vertices = [get(obj.benchModel,'Vertices'), ones(size(get(obj.benchModel,'Vertices'),1),1)];
             transformedVertices = obj.vertices * initialTransform';
-            transformedVertices = transformedVertices;
+            
             set(obj.benchModel,'Vertices',transformedVertices(:,1:3));
 
         end
