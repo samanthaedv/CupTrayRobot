@@ -28,13 +28,13 @@ classdef Tray
                 0, 0.06, 0;
                 0.1, 0.06, 0;
                 ];
-
+            obj.cups = Cup.empty(6, 0); 
             for i = 1:6
                 initialTransformCup = initialTransform * [1, 0, 0, cupLocation(i,1);
-                                       0, 1, 0, cupLocation(i,2);
-                                       0, 0, 1, cupLocation(i,3);
+                                       0, -1, 0, cupLocation(i,2);
+                                       0, 0, -1, cupLocation(i,3)+0.07;
                                        0, 0, 0, 1];
-                cups(i) = Cup(initialTransformCup);
+                obj.cups(i) = Cup(initialTransformCup);
             end
 
         end
