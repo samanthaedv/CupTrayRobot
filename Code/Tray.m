@@ -2,7 +2,7 @@ classdef Tray
 
     properties
        
-        trayModel
+        model
         vertices
         currentTransform
         cups
@@ -12,14 +12,14 @@ classdef Tray
     methods
         function obj = Tray(initialTransform)
             obj.currentTransform = initialTransform; %To get the tray rotated correctly trotx(pi/2)
-            obj.trayModel = PlaceObject('trayResize.ply'); %places the tray
+            obj.model = PlaceObject('trayResize.ply'); %places the tray
             %PlaceObject() can only take in a position not a transform.
             %Therefore place the tray at origin and transform vertices to
             %the initial transform
-            obj.vertices = [get(obj.trayModel,'Vertices'), ones(size(get(obj.trayModel,'Vertices'),1),1)];
+            obj.vertices = [get(obj.model,'Vertices'), ones(size(get(obj.model,'Vertices'),1),1)];
             transformedVertices = obj.vertices * initialTransform';
             
-            set(obj.trayModel,'Vertices',transformedVertices(:,1:3));
+            set(obj.model,'Vertices',transformedVertices(:,1:3));
 
             cupLocation = [-0.1 , -0.06, 0;
                 0, -0.06, 0;
@@ -42,8 +42,8 @@ classdef Tray
         function TrayMove(obj, destinationTransform)
 
             obj.currentTransform = destinationTransform;
-            transformedVertices = [obj.vertices,ones(size(obj.vertices,1),1)] * obj.currentTransform';
-            set(obj.trayModel,'Vertices',transformedVertices(:,1:3));
+            newVerts1 = (obj.vertices(:,1:3) * destinationTransform(1:3,1:3)') + destinationTransform(1:3,4)';
+            set(obj.model, 'Vertices', newVerts1);
 
         end
     end 

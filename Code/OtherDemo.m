@@ -21,7 +21,7 @@ r.model.base = [1,0,0,0.4;
 rUs = URTray;
 
 rUs.model.base = [1,0,0,-0.6;
-     0,1,0,-1;
+     0,1,0,-1.25;
      0,0,1,0;
      0,0,0,1]* trotx(pi/2) * troty(-pi/2);
 
@@ -51,19 +51,9 @@ qT = [1,0,0,-0.25;
 
 moveRobotRMRC(rUs,qR0,qT,100,0.02);
 %}
-qR1 = rUs.model.ikcon(tray1.currentTransform*[1,0,0,0; ...
-                                              0,1,0,-0.5; ...
-                                              0,0,1,0; ...
-                                              0,0,0,1] *trotz(pi/2)*troty(pi/2), qR0);
-moveRobot(rUs,qR0,qR1);
 
-qR2 = rUs.model.ikcon(tray1.currentTransform*[1,0,0,0; ...
-                                              0,1,0,-0.25; ...
-                                              0,0,1,0; ...
-                                              0,0,0,1] *trotz(pi/2)*troty(pi/2), qR1);
-moveRobot(rUs,qR1,qR2);
 
-moveRobotTray(rUs,qR2,qR1,tray1);
+
 
 
 for i = 1:6
