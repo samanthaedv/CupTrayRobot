@@ -1,4 +1,4 @@
-classdef Tray 
+classdef Tray < handle
 
     properties
        
@@ -40,11 +40,25 @@ classdef Tray
         end
 
         function TrayMove(obj, destinationTransform)
+            cupLocation = [-0.1 , -0.06, 0;
+                0, -0.06, 0;
+                0.1, -0.06, 0;
+                -0.1, 0.06, 0;
+                0, 0.06, 0;
+                0.1, 0.06, 0;
+                ];
 
             obj.currentTransform = destinationTransform;
             newVerts1 = (obj.vertices(:,1:3) * destinationTransform(1:3,1:3)') + destinationTransform(1:3,4)';
             set(obj.model, 'Vertices', newVerts1);
-
+            for i = 1:6
+                newTransformCup = destinationTransform * [1, 0, 0, cupLocation(i,1);
+                                       0, -1, 0, cupLocation(i,2);
+                                       0, 0, -1, cupLocation(i,3)+0.07;
+                                       0, 0, 0, 1];
+                obj.cups(i).CupMove(newTransformCup);
+                obj.cups(i).currentTransform = newTransformCup;
+            end
         end
     end 
 

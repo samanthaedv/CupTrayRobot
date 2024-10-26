@@ -1,4 +1,4 @@
-classdef Cup 
+classdef Cup < handle
 
     properties
        
@@ -24,8 +24,8 @@ classdef Cup
         function CupMove(obj, destinationTransform)
 
             obj.currentTransform = destinationTransform;
-            transformedVertices = [obj.vertices,ones(size(obj.vertices,1),1)] * obj.currentTransform';
-            set(obj.model,'Vertices',transformedVertices(:,1:3));
+            newVerts1 = (obj.vertices(:,1:3) * destinationTransform(1:3,1:3)') + destinationTransform(1:3,4)';
+            set(obj.model, 'Vertices', newVerts1);
 
         end
     end 

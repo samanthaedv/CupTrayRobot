@@ -32,8 +32,8 @@ function self = URTray(baseTr)
             link(8) = Link('d',	0.0921,'a',0,'alpha',0,'qlim',deg2rad([-360,360]), 'offset', 0);
             
             % Incorporate joint limits
-            link(1).qlim = [-1 0 ];
-            link(2).qlim = [-1.5 -0.3];
+            link(1).qlim = [-2 -0.3 ];
+            link(2).qlim = [-2 -0.3];
             link(3).qlim = [-360 360]*pi/180;
             link(4).qlim = [-90 90]*pi/180;
             link(5).qlim = [-170 170]*pi/180;
