@@ -4,6 +4,8 @@ clear all;
 hold on;
 axis([-2 2 -2 2 -1 3])
 
+
+
 Bench([1,0,0,0;
       0,1,0,0;
       0,0,1,0;
@@ -34,9 +36,12 @@ qR0 = [-0.1 -0.3 0   -pi/2    pi/4    -pi/4 -pi/2 0];
 
 
 rUs.model.animate(qR0);
+
+
+
 depotTransform = [0,	-1,	0,	0.8708;
-                 -1,	0,	0,	0.13105;
-                 0,	0,	-1,	0.95;
+                 -1,	0,	0,	0.132;
+                 0,	0,	-1,	1.15;
                  0,	0,	0,	1];
 gripperOffset = [1,0,0,0;
                  0,1,0,0;
@@ -51,6 +56,29 @@ qT = [1,0,0,-0.25;
 
 moveRobotRMRC(rUs,qR0,qT,100,0.02);
 %}
+
+global e_stop;
+e_stop = false;
+
+% Create the e-stop button
+eStopButton = uicontrol('Style', 'pushbutton', 'String', 'Toggle E-Stop', ...
+                        'Position', [20, 20, 100, 30], ... % Position on figure
+                        'Callback', @toggleEStop); % Callback to handle button press
+
+% Define the callback function for toggling the e-stop
+function toggleEStop(~, ~)
+    global e_stop;
+    e_stop = ~e_stop;  % Toggle the e-stop state
+    if e_stop
+        disp('E-stop activated');
+        set(eStopButton, 'String', 'E-Stop Active'); % Update button text
+    else
+        disp('E-stop deactivated');
+        set(eStopButton, 'String', 'Toggle E-Stop'); % Reset button text
+    end
+end
+
+
 qR1 = rUs.model.ikcon(tray1.currentTransform*[1,0,0,0; ...
                                               0,1,0,-0.5; ...
                                               0,0,1,0; ...
@@ -79,7 +107,7 @@ qR6 = rUs.model.ikcon([1,0,0,0;
 moveRobotTray(rUs,qR5,qR6,tray1);
 
 for i = 1:6
-    q1 = r.model.ikcon(tray1.cups(i).currentTransform, q0);
+    q1 = r.model.ikcon(tray1.cups(i).currentTransform*gripperOffset, q0);
 
 q2 = [ pi   -pi/2    pi/4    -pi/4 -pi/2 0];
 moveRobot(r,q0,q1);
