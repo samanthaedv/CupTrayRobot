@@ -1,4 +1,4 @@
-function [rposition,endEffectorPose] = moveRobot(r,q0, q1)
+function [rposition,endEffectorPose] = moveRobotCollisionTest(r,q0, q1, f1, v1, fn1)
 global e_stop;
 qtraj = jtraj(q0, q1, 100);
 
@@ -11,17 +11,13 @@ for i = 1:size(qtraj, 1)
     rposition = r.model.getpos(); % get the current pos of the robot
     endEffectorPose = r.model.fkine(rposition).T; %check the solution with forward kinematics transpose it
     
-    %{
-    collisionDetected = CheckCollisions(r, qtraj(i,:),environment);
-    VisualizeBoundingBoxes(r, qtraj(i,:), environment);
-        if collisionDetected == true
-            disp('Collision detected! Stopping movement.');
-            
-            
-            pause()
-            break;  % Stop if collision is detected
-        end
-    %}
+    result1 = IsCollision(r,qtraj(i,:),f1,v1,fn1);
+    
+     if result1 == 1
+        disp('Collision! ');
+            e_stop = true;
+        break
+    end
 
 end
 

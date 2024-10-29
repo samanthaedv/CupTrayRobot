@@ -10,6 +10,6 @@ function isCollision = checkCollision(linkVertices, envVertices)
     catch ME
         % In case of coplanar or collinear points, handle it here
         warning('Collision detection failed due to coplanar/collinear points. Using approximate method.');
-        isCollision = pdist2(mean(linkVertices), mean(envVertices)) < 0.1; % Example threshold
+        isCollision = pdist2(mean(linkVertices), mean(envVertices)) < 1; % Example threshold
     end
 end

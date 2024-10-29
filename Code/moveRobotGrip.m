@@ -1,4 +1,4 @@
-function [rposition,endEffectorPose] = moveRobotGrip(r,q0, q1, object, environment)
+function [rposition,endEffectorPose] = moveRobotGrip(r,q0, q1, object)
 qtraj = jtraj(q0, q1, 100);
  global e_stop;
 
@@ -9,20 +9,21 @@ for i = 1:size(qtraj, 1)
     r.model.animate(qtraj(i,:)); %animate all values in the matrix above
     rposition = r.model.getpos(); % get the current pos of the robot
     endEffectorPose = r.model.fkine(rposition).T; %check the solution with forward kinematics transpose it
-    endEffectorPose = endEffectorPose * [1,0,0,0;
-                                         0,1,0,0;
-                                         0,0,1,0.25;
-                                         0,0,0,1
-                                            ];
+    %endEffectorPose = endEffectorPose * [1,0,0,0;
+                                         %0,1,0,0;
+                                         %0,0,1,0.25;
+                                        % 0,0,0,1
+                                          %  ];
     newVerts1 = (object.vertices(:,1:3) * endEffectorPose(1:3,1:3)') + endEffectorPose(1:3,4)';
     set(object.model, 'Vertices', newVerts1);
     drawnow();
 
     %{
     collisionDetected = CheckCollisions(r, qtraj(i,:),environment);
+    VisualizeBoundingBoxes(r, qtraj(i,:), environment);
         if collisionDetected == true
             disp('Collision detected! Stopping movement.');
-            VisualizeBoundingBoxes(r, qtraj(i,:), environment);
+            
             
             pause()
             break;  % Stop if collision is detected
