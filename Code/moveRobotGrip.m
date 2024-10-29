@@ -18,11 +18,16 @@ for i = 1:size(qtraj, 1)
     set(object.model, 'Vertices', newVerts1);
     drawnow();
 
+    %{
     collisionDetected = CheckCollisions(r, qtraj(i,:),environment);
         if collisionDetected == true
             disp('Collision detected! Stopping movement.');
+            VisualizeBoundingBoxes(r, qtraj(i,:), environment);
+            
+            pause()
             break;  % Stop if collision is detected
         end
+    %}
 end
 
 
