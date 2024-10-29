@@ -1,2 +1,3 @@
+r =URTray;
 fence = Environment();
-LightCurtain(fence);
+LightCurtain(fence,r);

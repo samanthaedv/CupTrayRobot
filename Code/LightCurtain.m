@@ -1,7 +1,7 @@
-function LightCurtain(fence)
+function LightCurtain(fence, robot)
 
     global e_stop;
-    
+    e_stop = false;
     hold on;
     
     fenceVertices = [get(fence,'Vertices'), ones(size(get(fence,'Vertices'),1),1)];
@@ -23,9 +23,17 @@ function LightCurtain(fence)
     
     %animate person moving to fence
     for i = 0:20
+        
         currentValue = startValue + i * stepSize;
         transformedVertices = vertices*(transl(0,currentValue,0.05)*trotx(pi/2))'*1.5;
         set(person,'Vertices',transformedVertices(:,1:3));
+        q1 = robot.model.getpos();
+        q1(1) = -currentValue;
+        
+        if e_stop == false
+            robot.model.animate(q1);
+        end 
+        
         drawnow;
        
         yPerson = transformedVertices(:, 2);
@@ -33,11 +41,11 @@ function LightCurtain(fence)
     
    
     
-    if curtainTriggered %stop the system
-       e_stop = true;
-       disp('Light Curtain Triggered');
+        if curtainTriggered %stop the system
+         e_stop = true;
+        disp('Light Curtain Triggered');
    
-    end
+       end
         
     end
     
