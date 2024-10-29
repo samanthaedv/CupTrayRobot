@@ -6,10 +6,23 @@ axis([-2 2 -2 2 -1 3])
 
 
 
-Bench([1,0,0,0;
-      0,1,0,0;
-      0,0,1,0;
-      0,0,0,1]);
+environment = EnvironmentInitialise;
+%{
+    obstacleModel = PlaceObject('baby.ply');
+    vertices = [get(obstacleModel, 'Vertices'), ones(size(get(obstacleModel, 'Vertices'), 1), 1)];
+    obstacleTransform = transl(0, -0.5, 0.9);
+    obstacleVertices = vertices * obstacleTransform';
+    set(obstacleModel, 'Vertices', obstacleVertices(:, 1:3));
+    environment(end+1).model = obstacleModel;
+    environment(end).vertices = obstacleVertices(:, 1:3);
+    environment(end).transform = obstacleTransform;
+%} 
+%its a obstacle baby 
+
+
+   
+    
+
 tray1 = Tray([1,0,0,-0.25;
      0,1,0,0;
      0,0,1,0.4;
@@ -36,6 +49,8 @@ qR0 = [-0.1 -0.3 0   -pi/2    pi/4    -pi/4 -pi/2 0];
 
 
 rUs.model.animate(qR0);
+
+
 
 
 
@@ -83,20 +98,20 @@ qR1 = rUs.model.ikcon(tray1.currentTransform*[1,0,0,0; ...
                                               0,1,0,-0.5; ...
                                               0,0,1,0; ...
                                               0,0,0,1] *trotz(pi/2)*troty(pi/2), qR0);
-moveRobot(rUs,qR0,qR1);
+moveRobot(rUs,qR0,qR1, environment);
 
 qR2 = rUs.model.ikcon(tray1.currentTransform*[1,0,0,0; ...
                                               0,1,0,-0.25; ...
                                               0,0,1,0; ...
                                               0,0,0,1] *trotz(pi/2)*troty(pi/2), qR1);
-moveRobot(rUs,qR1,qR2);
+moveRobot(rUs,qR1,qR2, environment);
 
-moveRobotTray(rUs,qR2,qR1,tray1);
+moveRobotTray(rUs,qR2,qR1,tray1, environment);
 qR4 = [-0.5 -0.3 -pi/6   -pi/2    -pi/4    pi/4 -pi/2 pi/6];
-moveRobotTray(rUs,qR1,qR4,tray1);
+moveRobotTray(rUs,qR1,qR4,tray1, environment);
 
 qR5 = [-0.5 -1.5 pi/6   -pi/2    -pi/4    pi/4 -pi/2 -pi/6];
-moveRobotTray(rUs,qR4,qR5,tray1);
+moveRobotTray(rUs,qR4,qR5,tray1, environment);
 qR6 = rUs.model.ikcon([1,0,0,0;
                       0,1,0,0;
                       0,0,1,0.9;
@@ -104,28 +119,28 @@ qR6 = rUs.model.ikcon([1,0,0,0;
                                               0,1,0,-0.25; ...
                                               0,0,1,0; ...
                                               0,0,0,1] *trotz(pi/2)*troty(pi/2), qR5);
-moveRobotTray(rUs,qR5,qR6,tray1);
+moveRobotTray(rUs,qR5,qR6,tray1, environment);
 
 for i = 1:6
     q1 = r.model.ikcon(tray1.cups(i).currentTransform*gripperOffset, q0);
 
 q2 = [ pi   -pi/2    pi/4    -pi/4 -pi/2 0];
-moveRobot(r,q0,q1);
+moveRobot(r,q0,q1, environment);
 
-moveRobotGrip(r,q1,q0,tray1.cups(i));
+moveRobotGrip(r,q1,q0,tray1.cups(i), environment);
 
-moveRobotGrip(r,q0,q2,tray1.cups(i));
+moveRobotGrip(r,q0,q2,tray1.cups(i), environment);
 
 depotTransform = depotTransform * [1,0,0,0;
                               0,1,0,0;
                               0,0,1,-0.01;
                               0,0,0,1]; 
 q3 = r.model.ikcon(depotTransform, q2);
-moveRobotGrip(r,q2,q3,tray1.cups(i));
+moveRobotGrip(r,q2,q3,tray1.cups(i), environment);
 
-moveRobot(r,q3,q2);
+moveRobot(r,q3,q2, environment);
 
-moveRobot(r,q2,q0);
+moveRobot(r,q2,q0, environment);
 
 end
 

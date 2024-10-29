@@ -1,18 +1,15 @@
-function collisionDetected = checkCollision(robot, environment)
-    collisionDetected = false;
-    linkPoses = robot.model.fkine(robot.model.getpos());  % Get the poses of each link
 
-    % Check each link for collision with environment objects
-    for j = 1:length(linkPoses) - 1
-        % Transform link vertices to world coordinates
-        linkVerts = robot.model.links(j).vertices * linkPoses(j).T(1:3, 1:3)' + linkPoses(j).T(1:3, 4)';
+function isCollision = checkCollision(linkVertices, envVertices)
+    try
+        % Use convhulln to generate convex hull indices
+        linkHull = convhulln(linkVertices); 
+        envHull = convhulln(envVertices);
 
-        % Check collision with each environment object
-        for k = 1:length(environment)
-            if checkMeshIntersection(linkVerts, environment{k}.vertices)
-                collisionDetected = true;
-                return;
-            end
-        end
+        % Check if the convex hulls intersect (approximate method)
+        isCollision = ~isempty(intersect(linkHull(:), envHull(:)));
+    catch ME
+        % In case of coplanar or collinear points, handle it here
+        warning('Collision detection failed due to coplanar/collinear points. Using approximate method.');
+        isCollision = pdist2(mean(linkVertices), mean(envVertices)) < 0.1; % Example threshold
     end
 end

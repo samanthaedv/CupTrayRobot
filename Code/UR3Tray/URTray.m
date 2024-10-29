@@ -3,6 +3,7 @@ classdef URTray < RobotBaseClass
 
     properties(Access = public)              
         plyFileNameStem = 'URTray';
+        linkMeshes;
     end
     
     methods
@@ -15,6 +16,17 @@ function self = URTray(baseTr)
             self.model.base = self.model.base.T * baseTr * trotx(pi/2) * troty(pi/2);
             
             self.PlotAndColourRobot();         
+
+            self.linkMeshes{1} = plyread("URTrayLink0.ply");
+            self.linkMeshes{2} = plyread("URTrayLink1.ply");
+            self.linkMeshes{3} = plyread("URTrayLink2.ply");
+            self.linkMeshes{4} = plyread("URTrayLink3.ply");
+            self.linkMeshes{5} = plyread("URTrayLink4.ply");
+            self.linkMeshes{6} = plyread("URTrayLink5.ply");
+            self.linkMeshes{7} = plyread("URTrayLink6.ply");
+            self.linkMeshes{8} = plyread("URTrayLink7.ply");
+            self.linkMeshes{9} = plyread("URTrayLink8.ply");
+            
         end
 
 %% Create the robot model

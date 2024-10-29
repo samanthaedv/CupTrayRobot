@@ -15,8 +15,8 @@ for i = 1:size(qtraj, 1)
                                               0,0,0,1]);
     drawnow();
 
-    collisionDetected = checkCollision(r, environment);
-        if collisionDetected
+    collisionDetected = CheckCollisions(r, qtraj(i,:),environment);
+        if collisionDetected == true
             disp('Collision detected! Stopping movement.');
             break;  % Stop if collision is detected
         end

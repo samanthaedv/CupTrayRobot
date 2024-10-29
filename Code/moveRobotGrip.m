@@ -13,13 +13,13 @@ for i = 1:size(qtraj, 1)
                                          0,1,0,0;
                                          0,0,1,0.25;
                                          0,0,0,1
-                                            ]
+                                            ];
     newVerts1 = (object.vertices(:,1:3) * endEffectorPose(1:3,1:3)') + endEffectorPose(1:3,4)';
     set(object.model, 'Vertices', newVerts1);
     drawnow();
 
-    collisionDetected = checkCollision(r, environment);
-        if collisionDetected
+    collisionDetected = CheckCollisions(r, qtraj(i,:),environment);
+        if collisionDetected == true
             disp('Collision detected! Stopping movement.');
             break;  % Stop if collision is detected
         end
