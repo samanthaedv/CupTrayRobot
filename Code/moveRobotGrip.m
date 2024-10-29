@@ -1,4 +1,4 @@
-function [rposition,endEffectorPose] = moveRobotGrip(r,q0, q1, object)
+function [rposition,endEffectorPose] = moveRobotGrip(r,q0, q1, object, environment)
 qtraj = jtraj(q0, q1, 100);
  global e_stop;
 
@@ -17,6 +17,12 @@ for i = 1:size(qtraj, 1)
     newVerts1 = (object.vertices(:,1:3) * endEffectorPose(1:3,1:3)') + endEffectorPose(1:3,4)';
     set(object.model, 'Vertices', newVerts1);
     drawnow();
+
+    collisionDetected = checkCollision(r, environment);
+        if collisionDetected
+            disp('Collision detected! Stopping movement.');
+            break;  % Stop if collision is detected
+        end
 end
 
 

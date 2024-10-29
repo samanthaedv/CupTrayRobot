@@ -1,4 +1,4 @@
-function [rposition,endEffectorPose] = moveRobot(r,q0, q1)
+function [rposition,endEffectorPose] = moveRobot(r,q0, q1, environment)
 global e_stop;
 qtraj = jtraj(q0, q1, 100);
 
@@ -10,5 +10,10 @@ for i = 1:size(qtraj, 1)
     drawnow();
     rposition = r.model.getpos(); % get the current pos of the robot
     endEffectorPose = r.model.fkine(rposition).T; %check the solution with forward kinematics transpose it
+    collisionDetected = checkCollision(r, environment);
+        if collisionDetected
+            disp('Collision detected! Stopping movement.');
+            break;  % Stop if collision is detected
+        end
 end
 

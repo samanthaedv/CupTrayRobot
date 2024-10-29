@@ -1,4 +1,4 @@
-function [rposition,endEffectorPose] = moveRobotTray(r,q0, q1, object)
+function [rposition,endEffectorPose] = moveRobotTray(r,q0, q1, object, environment)
 qtraj = jtraj(q0, q1, 100);
 global e_stop;
 
@@ -14,6 +14,12 @@ for i = 1:size(qtraj, 1)
                                               0,0,1,0; ...
                                               0,0,0,1]);
     drawnow();
+
+    collisionDetected = checkCollision(r, environment);
+        if collisionDetected
+            disp('Collision detected! Stopping movement.');
+            break;  % Stop if collision is detected
+        end
 end
 
 
