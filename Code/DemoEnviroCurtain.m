@@ -1,0 +1,2 @@
+fence = Environment();
+LightCurtain(fence);
